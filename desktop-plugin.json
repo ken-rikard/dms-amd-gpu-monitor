@@ -1,0 +1,20 @@
+{
+  "id": "amdGpuMonitorDesktop",
+  "name": "AMD GPU Monitor (Desktop)",
+  "description": "Freely positionable desktop widget showing AMD GPU usage, VRAM, temperature, power, and active processes.",
+  "category": "monitoring",
+  "version": "3.1.0",
+  "author": "Navid A.",
+  "type": "desktop",
+  "capabilities": ["desktop-widget"],
+  "component": "./AmdGpuMonitorDesktopWidget.qml",
+  "settings": "./AmdGpuMonitorDesktopSettings.qml",
+  "icon": "memory",
+  "requires": ["amdgpu_top"],
+  "requires_dms": ">=1.2.0",
+  "permissions": [
+    "settings_read",
+    "settings_write",
+    "process"
+  ]
+}

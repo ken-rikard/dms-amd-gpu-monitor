@@ -1,8 +1,65 @@
-# AMD GPU Monitor
+# AMD GPU Monitor (Desktop Widget Fork)
 
-Real-time AMD GPU monitoring plugin (v2.0.0) for DankMaterialShell. Tracks GPU usage, VRAM, temperature, power, and per-process activity for AMD GPUs, with support for multiple GPU-specific widget variants.
+> **Fork of [navidagz/dms-amd-gpu-monitor](https://github.com/navidagz/dms-amd-gpu-monitor)**
+>
+> This fork adds a freely positionable **desktop widget** alongside the original bar widget. See [What's Different](#whats-different-in-this-fork) below.
+
+Real-time AMD GPU monitoring plugin for DankMaterialShell. Tracks GPU usage, VRAM, temperature, power, and per-process activity for AMD GPUs — available as both a **bar widget** and a **desktop widget**.
 
 ![Screenshot](screenshots/screenshot.png)
+
+---
+
+## What's Different in This Fork
+
+### Desktop Widget (`AmdGpuMonitorDesktop`)
+
+The original plugin only supports bar/panel widgets. This fork adds a full **desktop widget** that floats freely on your desktop and can be resized — similar to the built-in Desktop Clock or System Monitor widgets in DMS.
+
+**New files:**
+
+| File | Purpose |
+|------|---------|
+| `AmdGpuMonitorDesktopWidget.qml` | The desktop widget component (`DesktopPluginComponent`) |
+| `AmdGpuMonitorDesktopSettings.qml` | Settings panel for the desktop widget |
+| `desktop-plugin.json` | Plugin manifest declaring `"type": "desktop"` |
+| `components/GpuDataModel.qml` | Shared data model (new — see below) |
+| `install.sh` | Automated installer for both plugins |
+
+**Desktop widget features:**
+- Freely positionable and resizable on the desktop via DMS
+- Same three visual styles as the bar popout: `Default` (gauges), `Alternative` (cards), `Legacy` (bars)
+- Scrollable process list (auto-hides when widget is narrower than 300 px)
+- Configurable GPU index, background opacity, process list height
+- Minimum size 260 × 180, default size 360 × 430
+
+**Settings (desktop widget):**
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `gpuIndex` | Number | `0` | Which GPU to monitor |
+| `displayStyle` | Select | `default` | Visual style (default / alt / legacy) |
+| `backgroundOpacity` | Slider 0–100 | `70` | Background transparency |
+| `showProcessList` | Toggle | `true` | Show/hide process list |
+| `processListHeight` | Number | `200` | Max process list height in px |
+
+### Shared `GpuDataModel`
+
+The bar widget's inline polling logic was extracted into `components/GpuDataModel.qml` — a reusable `QtObject` containing the `amdgpu_top` timer, JSON parsing, sysfs temperature fallback, and all derived properties. Both the bar widget and the desktop widget delegate to it. The bar widget behaviour is **unchanged**.
+
+### `install.sh`
+
+A new installer script that copies both plugins into `~/.config/DankMaterialShell/plugins/`:
+
+```bash
+cd ~/repos/dms-amd-gpu-monitor
+bash install.sh
+dms restart
+```
+
+After install, go to **DMS Settings → Plugins → Scan for Plugins**, enable both, then add the desktop widget from **Settings → Desktop Widgets → Add Desktop Widget**.
+
+---
 
 ## Features
 
